@@ -1,57 +1,39 @@
+// Define the different value types we see underneath sections
+entry.1: value ("|" option)*
+define.2: "DEFINE"? variable "=" value ("|" option)*
+boot_option.3: (family ":")? variable "=" boot_value?
 
-// define section handling
-define_section: "[" ("Defines" ("." VALUE)* ","?)* "]" NL define*
-define: "DEFINE"? NAME "=" VALUE? ("|" VALUE)*
+// The bread and butter. This single line determines the section header
+// and then parses all entries under the section
+section: "[" (SECTION ("." VALUE)* ","?)* "]" define* entry* boot_option*
 
-source_section: "[" ("Sources" ("." VALUE)* ","?)* "]" NL source*
-source: VALUE ("|" VALUE)* 
-
-package_section: "[Packages]" NL package*
-package: VALUE 
-
-library_section: "[" ("LibraryClasses" ("." VALUE)* ","?)* "]" NL library*
-library: VALUE
-
-binary_section: "[Binaries" ("." VALUE)* "]" NL binary*
-binary: VALUE ("|" VALUE)*
-
-protocol_section: "[" ("Protocols" ("." VALUE)* ","?)* "]" NL protocol*
-protocol: VALUE ("|" VALUE)*
-
-pcd_section: "[" (PCD_TYPE ("." VALUE)* ","?)*"]" NL pcd*
-PCD_TYPE: "Pcd"|"FeaturePcd"|"FixedPcd"|"PcdEx"
-pcd: VALUE ("|" VALUE)*
-
-extension_section: "[UserExtensions" ("." VALUE)* "]" NL extension
-extension: VALUE
-
-depex_section: "[" (depex_str ("." VALUE)* ","?)* "]" NL depex*
-depex_str: /depex/i
-depex: VALUE
-
-guid_section: "[" ("Guids" ("." VALUE)* ","?)* "]" NL guid*
-guid: VALUE ("|" VALUE)*
-
-ppi_section: "[" ("Ppis" ("." VALUE)* ","?)* "]" NL ppi*
-ppi: VALUE
-
-buildoption_section: "[" ("BuildOptions" ("." VALUE)* ","?)* "]" NL buildoption*
-buildoption: (VALUE ":")? VALUE "=" BOPTION?
-BOPTION: (CHARS|"="|":")+
-
-// New Line information
-CR : /\r/
-LF : /\n/
-NL: (CR? LF)+
 
 // Name and value
-NAME: /\w/+
+variable: VARIABLE
+VARIABLE: (LCASE_LETTER|UCASE_LETTER|DIGIT|"_"|"$"|"("|")"|"*")+
+
+value: VALUE
 VALUE: CHARS+
+
+boot_value: BOOT_VALUE
+BOOT_VALUE: (CHARS|"="|":")+
+
+family: WORD
+
+option: OPTION
+OPTION: (CHARS|"*")+
+
+command: COMMAND
+COMMAND: (WORD|DIGIT|"*")+
+flag: FLAG
+FLAG: (CHARS|"="|":")+
+
+WORD: (LCASE_LETTER|UCASE_LETTER|"_")+
+SECTION: CHARS+
 
 LCASE_LETTER: "a".."z"
 UCASE_LETTER: "A".."Z"
 DIGIT: "0".."9"
-SYMBOLS: "_"|"."|"-"|"/"|"\\"|"\""|" "|"*"|"$"|"("|")"|","
+SYMBOLS: "_"|"."|"-"|"/"|"\\"|"\""|" "|"$"|"("|")"|","
 CHARS: LCASE_LETTER|UCASE_LETTER|DIGIT|SYMBOLS
-
 
