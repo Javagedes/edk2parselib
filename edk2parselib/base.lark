@@ -1,0 +1,22 @@
+
+define.3: "DEFINE"? VARIABLE "=" VALUE ("|" OPTION)*
+entry.2: VALUE ("|" OPTION)*
+build_option.1: (WORD ":")? VARIABLE "=" FLAGS?
+section: "[" SECTION_NAME "]" define* entry* build_option*
+
+
+SECTION_NAME: CHARS+
+VALUE: CHARS+
+OPTION: (CHARS|"*")+
+
+WORD.3: (LCASE_LETTER|UCASE_LETTER|"_")+
+VARIABLE.2: (LCASE_LETTER|UCASE_LETTER|DIGIT|"_"|"$"|"("|")"|"*")+
+FLAGS.1: (CHARS|"="|":")+
+
+
+LCASE_LETTER: "a".."z"
+UCASE_LETTER: "A".."Z"
+DIGIT: "0".."9"
+SYMBOLS: "_"|"."|"-"|"/"|"\\"|"\""|" "|"$"|"("|")"|","|"="|":"
+CHARS: LCASE_LETTER|UCASE_LETTER|DIGIT|SYMBOLS
+
