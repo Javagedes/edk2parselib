@@ -1,6 +1,6 @@
 # TODOs
 
-1. Implment a if statement Tree of the following structureÚ
+1. Implement a if statement Tree of the following structureÚ
 
     if_statement
         if_branch
