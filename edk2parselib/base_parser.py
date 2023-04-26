@@ -126,6 +126,5 @@ class BaseParser():
     def parse(self, path: PathLike): 
         file_data = open(path)
         tree = self._PARSER.parse(file_data.read())
-        print(tree.pretty())
-        #tree = self._VISITOR.visit(tree)
-        #self.raw_data = self._TRANSFORMER.transform(tree)
+        tree = self._VISITOR.visit(tree)
+        self.raw_data = self._TRANSFORMER.transform(tree)
