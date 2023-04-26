@@ -14,6 +14,8 @@
 
 2. Implement !include <file> functionality that will parse the file into a tree structure and insert it
 
+3. Merge similar sections that come from !includes
+
 3. make `replace_variable` in base_parser.py actually replace a variable
 
 4. Handle local vars vs global defines
