@@ -65,6 +65,7 @@ class BaseTransformer(Transformer):
     """
     def replace_variable(self, data):
         """Checks for, and replaces, a $(<VARIABLE>)."""
+        # TODO, Make this do something.
         return str(data)
 
     # When we detect a entry rule, transform it into the appropriate entry object
