@@ -1,22 +1,36 @@
 
-define.3: "DEFINE"? VARIABLE "=" VALUE ("|" OPTION)*
-entry.2: VALUE ("|" OPTION)*
-build_option.1: (WORD ":")? VARIABLE "=" FLAGS?
-section: "[" SECTION_NAME "]" define* entry* build_option*
+//Rules to build a tree object for a specific section
+define_section.50: "[" DEFINE_SECTION_NAME "]" define_entry*
+buildoption_section.40: "[" BUILD_OPTIONS_SECTION_NAME "]" buildoption_entry*
+common_section.0: "[" SECTION_NAME "]" common_entry*
 
+//Rules to handle some macros
+include_statement: "!include" PATH
 
-SECTION_NAME: CHARS+
-VALUE: CHARS+
-OPTION: (CHARS|"*")+
+//Rules for build an entry for a section
+define_entry: _NL STRING "=" STRING ("|" STRING)*
+common_entry: _NL STRING ("|" STRING)*
+buildoption_entry: _NL (STRING ":")? STRING "=" FLAG?
 
-WORD.3: (LCASE_LETTER|UCASE_LETTER|"_")+
-VARIABLE.2: (LCASE_LETTER|UCASE_LETTER|DIGIT|"_"|"$"|"("|")"|"*")+
-FLAGS.1: (CHARS|"="|":")+
+//More Terminals, specifically for section names
+BUILD_OPTIONS_SECTION_NAME: "BuildOptions" SECTION_NAME?
+DEFINE_SECTION_NAME: "Defines" SECTION_NAME?
+SECTION_NAME: (LCASE_LETTER|UCASE_LETTER|DIGIT|" "|","|"."|"_"|"\"")+
 
+//Terminals for matching. Needs to be manipulated by the Transformer
+PATH: (LCASE_LETTER|UCASE_LETTER|DIGIT|VARIABLE|"/"|"\\"|".")+
+STRING: CHARS+
+FLAG: (CHARS|"="|":")+
 
+// General use characters to create terminals
 LCASE_LETTER: "a".."z"
 UCASE_LETTER: "A".."Z"
 DIGIT: "0".."9"
-SYMBOLS: "_"|"."|"-"|"/"|"\\"|"\""|" "|"$"|"("|")"|","|"="|":"
+VARIABLE: ("$"|"("|")")
+SYMBOLS: "_"|"."|"-"|"/"|"\\"|"\""|"$"|"("|")"|","|"*"|" "
 CHARS: LCASE_LETTER|UCASE_LETTER|DIGIT|SYMBOLS
 
+// New line characters
+CR : /\r/
+LF : /\n/
+_NL.10: (CR? LF)+

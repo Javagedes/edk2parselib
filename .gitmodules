@@ -1,0 +1,3 @@
+[submodule "mu_basecore"]
+	path = mu_basecore
+	url = https://github.com/microsoft/mu_basecore
